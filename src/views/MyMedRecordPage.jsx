@@ -3,12 +3,33 @@ import baseUrl from "../api/baseUrl";
 import { useEffect, useState } from "react";
 import MedRecordTable from "../components/MedRecordTable";
 import gifLoading from "../components/assets/Double Ring@1x-1.0s-200px-200px.svg"
-
+import { useNavigate } from "react-router";
 
 export default function MyMedRecordPage() {
 
     const [medRecords, setMedRecords] = useState([]);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
+
+     useEffect(() => {
+        if (!localStorage.access_token) {
+            Toastify({
+                text: "Please login first",
+                duration: 3000,
+                destination: "https://github.com/apvarun/toastify-js",
+                newWindow: true,
+                close: true,
+                gravity: "bottom", // `top` or `bottom`
+                position: "left", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "red",
+                },
+                onClick: function () { } // Callback after click
+            }).showToast();
+            navigate('/login');
+        }
+    }, [navigate]);
 
     async function fetchMedRecords() {
         try {
